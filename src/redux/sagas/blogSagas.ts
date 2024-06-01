@@ -23,7 +23,6 @@ function* fetchBlogs(action: {
         params: { page, limit, sortBy, order, search },
       },
     );
-    console.log(response);
 
     yield put(fetchBlogsSuccess(response.data));
   } catch (error) {

@@ -16,7 +16,11 @@ function App() {
       children: [
         {
           path: '/',
-          element: <HomePage />,
+          element: (
+            <LazyShow>
+              <HomePage />
+            </LazyShow>
+          ),
         },
         {
           path: '/blogs/:id',

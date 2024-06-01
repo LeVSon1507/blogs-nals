@@ -188,5 +188,6 @@ export const responsive = {
 export const MY_LINKED_URL = 'https://www.linkedin.com/in/i-am-le-van-son/';
 export const MY_FB_URL = 'https://www.facebook.com/me.iamlevson/';
 export const RE_CAPTCHA_SITE_KEY = '6LfQ3KUoAAAAAKy7R5K2DCfMEwYQy8_Qso9c5q37';
+export const MESSAGE_404 = 'Request failed with status code 404';
 
 export type Callback = (...args: any[]) => void;

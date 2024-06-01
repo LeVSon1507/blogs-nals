@@ -7,7 +7,7 @@ import { ToastInfo } from 'src/utils/toastOptions';
 import { RE_CAPTCHA_SITE_KEY } from 'src/utils/helper';
 
 const ContactUs = () => {
-  const [isShowBtnSend, setIsShowBtnSend] = useState(false);
+  const [isShowBtnSend, setIsShowBtnSend] = useState(true);
   const [questionAbout, setQuestionAbout] = useState('');
   const [message, setMessage] = useState('');
 
@@ -63,11 +63,9 @@ const ContactUs = () => {
                   onChange={handleChangeMessage}
                 ></textarea>
               </div>
-              {message && questionAbout && (
-                <div className="form-group">
-                  <ReCAPTCHA sitekey={RE_CAPTCHA_SITE_KEY} onChange={onSuccessReCaptcha} />
-                </div>
-              )}
+              <div className="form-group">
+                <ReCAPTCHA sitekey={RE_CAPTCHA_SITE_KEY} onChange={onSuccessReCaptcha} />
+              </div>
               {isShowBtnSend && (
                 <div className="form-group mt-3">
                   <button className="btn btn-primary" type="button" onClick={handleSubmit}>
