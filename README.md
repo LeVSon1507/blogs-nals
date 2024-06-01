@@ -1,46 +1,61 @@
-# Getting Started with Create React App
+# Blog App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a blog application built with React.js, Redux, and Bootstrap.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- View a list of blogs with pagination, sorting, and searching functionality.
+- Create and edit blogs with form validation.
+- View detailed information about a specific blog.
+- Responsive design for mobile and desktop devices.
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To get started with the project, follow these steps:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Clone the repository:
 
-### `npm test`
+   ```
+   git clone https://github.com/LeVSon1507/blogs-nals.git
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Install dependencies:
 
-### `npm run build`
+   ```
+   cd nals-blog-exam
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Start the development server:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```
+   npm start
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. Open [http://localhost:3000](http://localhost:3000) to view the application in your browser.
 
-### `npm run eject`
+## Folder Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The project folder structure is organized as follows:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- `src`: Contains the source code of the application.
+  - `assets` : Contain image.
+  - `components`: Reusable UI components.
+  - `container`: Top-level components for different pages of the application.
+  - `redux`: Redux store setup, actions, reducers, and sagas.
+  - `utils`: Helper folder.
+- `public`: Contains the HTML template and static assets.
+- `.eslintrc.json`: ESLint configuration file.
+- `.prettierrc.json`: Prettier configuration file.
+- `package.json`: Project metadata and dependencies.
+- `README.md`: Project documentation.
+- `about.txt`: Brief overview of the project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Contributing
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Contributions are welcome! Feel free to open issues or pull requests for any improvements or features you'd like to see in the project.
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+# blogs-nals
