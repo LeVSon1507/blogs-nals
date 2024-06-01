@@ -1,0 +1,32 @@
+.form-control-borderless {
+  border: none;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.search-icon-container {
+  cursor: pointer;
+}
+
+.ci-search-icon {
+  color: #32c5d2;
+  font-size: 32px;
+}
+
+.cmp-searchBar-container {
+  padding: 20px;
+}
+
+.form-control-borderless:hover,
+.form-control-borderless:active,
+.form-control-borderless:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
