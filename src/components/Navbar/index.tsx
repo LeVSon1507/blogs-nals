@@ -44,14 +44,6 @@ function Navbar() {
                 Home
               </p>
             </li>
-            <li className="nav-item">
-              <p
-                className="nav-link text-light cursor-pointer"
-                onClick={() => handleGoToOtherPage('about')}
-              >
-                About
-              </p>
-            </li>
 
             <li className="nav-item">
               <p
@@ -59,15 +51,6 @@ function Navbar() {
                 onClick={() => handleGoToOtherPage('contact')}
               >
                 Contact
-              </p>
-            </li>
-
-            <li className="nav-item">
-              <p
-                className="nav-link text-light cursor-pointer"
-                onClick={() => handleGoToOtherPage('login')}
-              >
-                Login
               </p>
             </li>
           </ul>

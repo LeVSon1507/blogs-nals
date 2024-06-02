@@ -14,6 +14,11 @@ const Notification = ({
     navigate('/');
     window.location.reload();
   };
+
+  const handleContactUs = () => {
+    navigate('/contact');
+  };
+
   return (
     <div className="d-flex flex-column justify-content-center align-items-center m-7 mb-4">
       <img src={not_found_image} width={500} height={500} alt="not_found" />
@@ -21,6 +26,9 @@ const Notification = ({
       <button onClick={handleBackToHome} className="btn btn-primary d-flex center">
         <FaHome className="mt-1 mr-2" />
         Back to home
+      </button>
+      <button onClick={handleContactUs} className="btn btn-warning mt-2">
+        Contact Us
       </button>
     </div>
   );

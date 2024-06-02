@@ -21,6 +21,7 @@ import LoadingCommon from 'src/components/LoadingCommon';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/redux/store';
 import { isEmpty } from 'lodash';
+import ReactQuill from 'react-quill';
 
 interface BlogFormData {
   title: string;
@@ -68,6 +69,8 @@ function BlogFrom() {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<BlogFormData>({
     defaultValues: initValue,
@@ -87,8 +90,9 @@ function BlogFrom() {
     try {
       if (isEditing) {
         dispatch(editBlogRequest(id, payload));
-        navigate(`/blogs/${id}`);
         dispatch(fetchBlogDetailRequest(id));
+
+        window.location.href = `/blog/${id}`;
       } else {
         dispatch(createBlogRequest(payload));
       }
@@ -181,12 +185,17 @@ function BlogFrom() {
                     <div className="col-lg-12">
                       <div className="mb-3">
                         <label htmlFor="content">Content *</label>
-                        <textarea
+                        <ReactQuill
+                          theme="snow"
+                          value={watch('content') || ''}
+                          onChange={(value) => setValue('content', value)}
+                        />
+                        {/* <textarea
                           className="form-control"
                           rows={5}
                           placeholder="Content"
                           {...register('content', { required: true })}
-                        />
+                        /> */}
                         {!!errors.content && (
                           <p className="text-danger my-2">Content is required</p>
                         )}

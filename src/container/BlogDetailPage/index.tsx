@@ -56,9 +56,12 @@ function BlogDetailPage() {
                   </div>
                 </div>
                 <div className="article-content">
-                  <p className="article-content-text">
-                    {blogDetail?.description || blogDetail?.content}
-                  </p>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: blogDetail?.content ?? blogDetail?.description,
+                    }}
+                    className="article-content-text"
+                  />
 
                   {!!blogDetail?.body && (
                     <blockquote>

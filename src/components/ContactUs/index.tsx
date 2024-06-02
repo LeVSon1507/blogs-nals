@@ -43,6 +43,7 @@ const ContactUs = () => {
                   onChange={(e) => setQuestionAbout(e.target.value)}
                 >
                   <option value="Tạo tin tức mới">Tạo tin tức mới</option>
+                  <option value="Vấn đề kết nối">Vấn đề kết nối</option>
                   <option value="Tìm kiếm tin tức">Tìm kiếm tin tức</option>
                   <option value="Tìm kiếm tin tức theo từ khoá cụ thể">
                     Tìm kiếm tin tức theo từ khoá cụ thể

@@ -4,6 +4,7 @@ import { Blog } from 'src/redux/type';
 import { isEmpty } from 'lodash';
 import { LOGO_NALS, formatDateTime } from 'src/utils/helper';
 import { useNavigate } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
 
 const Article = ({ data }: { data: Blog[] }) => {
   const navigate = useNavigate();
@@ -20,13 +21,22 @@ const Article = ({ data }: { data: Blog[] }) => {
     <div className="container">
       <div className="row">
         {isEmpty(data) ? (
-          <></>
+          <Skeleton height={200} />
         ) : (
           data.map((item: Blog, index: number) => {
             return (
               <div key={index} className="media col-lg-4 col-md-6 col-12 mt-4">
                 <div className="cmp-article-item media-body card service-wrapper rounded border-0 shadow p-4">
-                  <img src={item?.image} alt="hinh_anh_news" className="cmp-article-img" />
+                  {isEmpty(item?.image) ? (
+                    <Skeleton height={200} />
+                  ) : (
+                    <img
+                      src={item?.image}
+                      alt="hinh_anh_news"
+                      className="cmp-article-img"
+                      loading="lazy"
+                    />
+                  )}
                   <div className="content mt-4">
                     <h5 className="title">{item?.title}</h5>
                     <p className="description media-content text-muted mt-3 mb-0">
