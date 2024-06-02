@@ -8,9 +8,12 @@ import Pagination from 'src/components/Pagination';
 import SearchBar from 'src/components/SearchBar';
 import Notification from 'src/components/Notification';
 import { RootState } from 'src/redux/store';
+import { FaPlus } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     blogs = [],
@@ -33,6 +36,8 @@ const HomePage = () => {
   const handleSearch = (searchTerm: string) =>
     dispatch(fetchBlogsRequest({ page: 1, limit, sortBy, order, search: searchTerm }));
 
+  const handleCreateBlog = () => navigate('/blogs/new-edit-blog');
+
   if (loading) return <LoadingCommon />;
   if (error) return <Notification message={error} />;
 
@@ -42,6 +47,15 @@ const HomePage = () => {
       {!isEmpty(blogs) && !loading ? (
         <>
           <SearchBar onSearch={handleSearch} searchKey={search} />
+          <div className="container d-flex justify-content-start">
+            <button
+              className="btn btn-primary text-center d-flex justify-content-start"
+              onClick={handleCreateBlog}
+            >
+              <FaPlus className="mr-1" size={20} />
+              Add Blog
+            </button>
+          </div>
           <Article data={blogs} />
         </>
       ) : (

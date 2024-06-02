@@ -35,7 +35,7 @@ const SearchBar: React.FC<Props> = ({ onSearch, searchKey }) => {
               </div>
               <div className="col-auto">
                 <button className="btn btn-lg btn-primary" type="submit">
-                  Tìm kiếm
+                  Search
                 </button>
               </div>
             </div>

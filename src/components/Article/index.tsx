@@ -12,6 +12,10 @@ const Article = ({ data }: { data: Blog[] }) => {
     navigate(`/blogs/${id}`);
   };
 
+  const handleEditBlog = (id: string) => {
+    navigate(`/blogs/new-edit-blog?id=${id}`);
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -36,7 +40,13 @@ const Article = ({ data }: { data: Blog[] }) => {
                         onClick={() => handleGoToDetailPage(item?.id)}
                         className="btn btn-primary"
                       >
-                        Xem Thêm <i className="mdi mdi-chevron-right" />
+                        More <i className="mdi mdi-chevron-right" />
+                      </button>
+                      <button
+                        onClick={() => handleEditBlog(item?.id)}
+                        className="btn btn-warning ml-2"
+                      >
+                        Edit <i className="mdi mdi-chevron-right" />
                       </button>
                     </div>
                   </div>

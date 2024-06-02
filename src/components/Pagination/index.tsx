@@ -17,7 +17,7 @@ const Pagination: React.FC<Props> = ({ currentPage, onPageChange, totalPosts }) 
   }
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 mb-3">
       <div className="row gallery-bottom">
         <div className="col-sm-6">
           <ul className="pagination">

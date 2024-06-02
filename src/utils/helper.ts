@@ -1,8 +1,37 @@
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { useEffect } from 'react';
+import { ToastError } from './toastOptions';
 
 export const LOGO_NALS = 'https://nals.vn/wp-content/uploads/2021/03/nals-white.png';
+
+const isImage = ['png', 'jpg', 'svg', 'webp', 'jpeg'];
+
+export const handleImageUpload = (image, setImageUrl) => {
+  const data = new FormData();
+  for (let i = 0; i < image?.length; i++) {
+    const fileExtension = image[i].name.split('.').pop().toLowerCase();
+    if (isImage.includes(`${fileExtension}`)) {
+      data.append('file', image[i]);
+      data.append('upload_preset', `upload`);
+      data.append('cloud_name', 'lvson');
+      fetch('https://api.cloudinary.com/v1_1/lvson/image/upload', {
+        method: 'post',
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setImageUrl(data?.url);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setImageUrl('err');
+      ToastError(`Invalid file extension: ${fileExtension}`);
+    }
+  }
+};
 
 export const useScrollTop = () => {
   useEffect(() => {
@@ -189,5 +218,6 @@ export const MY_LINKED_URL = 'https://www.linkedin.com/in/i-am-le-van-son/';
 export const MY_FB_URL = 'https://www.facebook.com/me.iamlevson/';
 export const RE_CAPTCHA_SITE_KEY = '6LfQ3KUoAAAAAKy7R5K2DCfMEwYQy8_Qso9c5q37';
 export const MESSAGE_404 = 'Request failed with status code 404';
+export const BASE_URL = 'https://5f55a98f39221c00167fb11a.mockapi.io/blogs';
 
 export type Callback = (...args: any[]) => void;

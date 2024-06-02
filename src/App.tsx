@@ -7,6 +7,7 @@ import BlogDetailPage from './container/BlogDetailPage';
 import Notification from './components/Notification';
 import ContactUs from './components/ContactUs';
 import LazyShow from './components/Animated/LazyShow';
+import BlogFrom from './container/BlogForm';
 
 function App() {
   const router = createBrowserRouter([
@@ -25,6 +26,10 @@ function App() {
         {
           path: '/blogs/:id',
           element: <BlogDetailPage />,
+        },
+        {
+          path: '/blogs/new-edit-blog',
+          element: <BlogFrom />,
         },
         {
           path: '/contact',
