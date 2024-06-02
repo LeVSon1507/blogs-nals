@@ -47,6 +47,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 90%;
+  max-height: 100px;
 }
 
 .service-container .number-icon .icon-2 i {

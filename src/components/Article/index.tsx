@@ -39,9 +39,19 @@ const Article = ({ data }: { data: Blog[] }) => {
                   )}
                   <div className="content mt-4">
                     <h5 className="title">{item?.title}</h5>
-                    <p className="description media-content text-muted mt-3 mb-0">
-                      {item?.description}
-                    </p>
+                    {item?.content ? (
+                      <p
+                        className="description media-content  text-muted mt-3 mb-0"
+                        dangerouslySetInnerHTML={{
+                          __html: item?.content ?? item?.body ?? item?.title,
+                        }}
+                      />
+                    ) : (
+                      <p className="description media-content text-muted mt-3 mb-0">
+                        {item?.description}
+                      </p>
+                    )}
+
                     <p className="text-muted mt-3 mb-0">
                       Thông tin ngày: {formatDateTime(item?.createdAt)}
                     </p>

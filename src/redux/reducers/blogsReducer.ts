@@ -30,7 +30,7 @@ const initialState: BlogState = {
 const blogsReducer = (state = initialState, action: any): BlogState => {
   switch (action.type) {
     case FETCH_BLOGS_REQUEST:
-      return { ...state, loading: true, ...action.payload };
+      return { ...state, loading: true, ...action.payload, currentPage: action.payload.page };
     case FETCH_BLOGS_SUCCESS:
       return { ...state, loading: false, blogs: action.payload };
     case FETCH_BLOGS_FAILURE:

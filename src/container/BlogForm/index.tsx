@@ -1,27 +1,24 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/self-closing-comp */
 import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import './styles.css';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { IoArrowBackCircleSharp } from 'react-icons/io5';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import ImageUpload from 'src/components/ImageUpload';
+import LoadingCommon from 'src/components/LoadingCommon';
+import { RootState } from 'src/redux/store';
 import {
   clearBlogDetailRequest,
   createBlogRequest,
   editBlogRequest,
   fetchBlogDetailRequest,
 } from 'src/redux/actions/blogActions';
-import { yupResolver } from '@hookform/resolvers/yup';
-import ImageUpload from 'src/components/ImageUpload';
 import imageDefault from 'src/assets/images/default_image.svg';
-import { IoArrowBackCircleSharp } from 'react-icons/io5';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import LoadingCommon from 'src/components/LoadingCommon';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/redux/store';
+import './styles.css';
+import { ToastSuccess } from 'src/utils/toastOptions';
 import { isEmpty } from 'lodash';
-import ReactQuill from 'react-quill';
 
 interface BlogFormData {
   title: string;
@@ -30,31 +27,45 @@ interface BlogFormData {
 }
 
 const yupSchema = Yup.object({
-  title: Yup.string().required(),
-  image: Yup.string().required(),
-  content: Yup.string().required(),
+  title: Yup.string().required('Title is required'),
 });
 
-function BlogFrom() {
+const BlogForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [searchParams] = useSearchParams();
   // @ts-ignore
-  const currentSearchParams = Object.fromEntries([...searchParams]);
+  const { id } = Object.fromEntries([...searchParams]);
+  const isEditing = !!id;
 
-  const { id } = currentSearchParams || {};
-  const isEditing = !isEmpty(id);
+  const { blogDetail, loading, isEditSuccess, isCreateSuccess, newBlogInfo } = useSelector(
+    (state: RootState) => state.blog,
+  );
 
-  const { blogDetail, loading } = useSelector((state: RootState) => state.blog) ?? {};
-
-  const initValue = useMemo(() => {
-    return {
+  const initValue = useMemo(
+    () => ({
       title: blogDetail?.title || '',
       image: blogDetail?.image || '',
       content: blogDetail?.content || '',
-    };
-  }, [blogDetail?.content, blogDetail?.image, blogDetail?.title]);
+    }),
+    [blogDetail],
+  );
+
+  const {
+    register,
+    getValues,
+    reset,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<BlogFormData>({
+    defaultValues: initValue,
+    resolver: yupResolver<any>(yupSchema),
+  });
+
+  const [imageUrl, setImageUrl] = React.useState(blogDetail?.image);
+  const [isOpenModalCrop, setIsOpenModalCrop] = React.useState(false);
+  const [isCropDone, setIsCropDone] = React.useState(!!blogDetail?.image);
 
   useEffect(() => {
     if (id) {
@@ -65,63 +76,54 @@ function BlogFrom() {
     };
   }, [dispatch, id]);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<BlogFormData>({
-    defaultValues: initValue,
-    resolver: yupResolver<any>(yupSchema),
-  });
-
-  const [imageUrl, setImageUrl] = React.useState<string>(blogDetail?.image);
-  const [isOpenModalCrop, setIsOpenModalCrop] = React.useState(false);
-  const [isCropDone, setIsCropDone] = React.useState(!isEmpty(blogDetail?.image));
-
-  const submitForm = async (data) => {
-    const payload = {
-      ...data,
-      image: imageUrl,
-    };
-
-    try {
-      if (isEditing) {
-        dispatch(editBlogRequest(id, payload));
-        dispatch(fetchBlogDetailRequest(id));
-
-        window.location.href = `/blog/${id}`;
-      } else {
-        dispatch(createBlogRequest(payload));
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
-  };
-
   useEffect(() => {
-    if (blogDetail?.image) {
+    if (isEditing && blogDetail?.image) {
       setImageUrl(blogDetail.image);
       setIsCropDone(true);
     }
-  }, [blogDetail?.image]);
+    if (!isEditing) {
+      setImageUrl(imageDefault);
+      setIsCropDone(false);
+    }
+  }, [blogDetail?.image, isEditing]);
 
   useEffect(() => {
     reset(initValue);
-  }, [initValue]);
+  }, [initValue, reset]);
+
+  const submitForm = () => {
+    const payload = { ...getValues(), image: imageUrl };
+
+    if (isEditing) {
+      dispatch(editBlogRequest(id, payload));
+      if (isEditSuccess) {
+        dispatch(fetchBlogDetailRequest(id));
+        setTimeout(() => {
+          ToastSuccess('Edit blog successfully');
+          handleResetForm();
+          navigate(`/blogs/${id}`);
+        }, 1000);
+      }
+    } else {
+      dispatch(createBlogRequest(payload));
+      if (isCreateSuccess) {
+        dispatch(fetchBlogDetailRequest(id));
+        setTimeout(() => {
+          ToastSuccess('Create new blog successfully');
+          handleResetForm();
+          navigate(`/blogs/${newBlogInfo?.id}`);
+        }, 1000);
+      }
+    }
+  };
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
   const handleResetForm = () => {
-    reset({
-      title: '',
-      image: '',
-      content: '',
-    });
+    reset({ title: '', image: '', content: '' });
+    dispatch(clearBlogDetailRequest());
     setImageUrl('');
     setIsCropDone(false);
   };
@@ -129,7 +131,7 @@ function BlogFrom() {
   if (loading) return <LoadingCommon />;
 
   return (
-    <form onSubmit={handleSubmit(submitForm)} className="p-3">
+    <div id="create-edit-form" className="p-3">
       <div className="container-fluid mt-3">
         <div className="container">
           <div className="d-flex align-items-center pt-2">
@@ -147,7 +149,11 @@ function BlogFrom() {
               >
                 <span className="text">Cancel</span>
               </button>
-              <button type="submit" className="p-2 btn btn-primary btn-sm btn-icon-text">
+              <button
+                disabled={isEmpty(imageUrl) || isEmpty(watch('content')) || isEmpty(watch('title'))}
+                onClick={submitForm}
+                className="p-2 btn btn-primary btn-sm btn-icon-text"
+              >
                 <span className="text">{isEditing ? 'Edit' : 'Create'}</span>
               </button>
             </div>
@@ -161,9 +167,10 @@ function BlogFrom() {
                   <img
                     src={isCropDone && imageUrl ? imageUrl : imageDefault}
                     alt="image_blog"
-                    width={'100%'}
-                    height={'100%'}
+                    width="100%"
+                    height="100%"
                   />
+                  {watch('image') && <div className="invalid-feedback">{'Image is required'}</div>}
                 </div>
               </div>
               <div className="card mb-4">
@@ -172,32 +179,28 @@ function BlogFrom() {
                   <div className="row">
                     <div className="col-lg-6">
                       <div className="mb-3">
-                        <label htmlFor="title">Title *</label>
+                        <label htmlFor="title">Title</label>
                         <input
                           type="text"
                           placeholder="Title"
-                          className="form-control"
+                          className={`form-control ${errors.title ? 'is-invalid' : ''}`}
                           {...register('title', { required: true })}
                         />
-                        {!!errors.title && <p className="text-danger my-2">Title is required</p>}
+                        {errors.title && (
+                          <div className="invalid-feedback">{errors.title.message}</div>
+                        )}
                       </div>
                     </div>
                     <div className="col-lg-12">
                       <div className="mb-3">
-                        <label htmlFor="content">Content *</label>
+                        <label htmlFor="content">Content</label>
                         <ReactQuill
                           theme="snow"
-                          value={watch('content') || ''}
                           onChange={(value) => setValue('content', value)}
+                          value={watch('content') || ''}
                         />
-                        {/* <textarea
-                          className="form-control"
-                          rows={5}
-                          placeholder="Content"
-                          {...register('content', { required: true })}
-                        /> */}
-                        {!!errors.content && (
-                          <p className="text-danger my-2">Content is required</p>
+                        {!watch('content') && (
+                          <div className="invalid-feedback">{'Content is required'}</div>
                         )}
                       </div>
                     </div>
@@ -229,7 +232,8 @@ function BlogFrom() {
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
-}
-export default BlogFrom;
+};
+
+export default BlogForm;

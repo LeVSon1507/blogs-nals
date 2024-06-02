@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBlogsRequest } from 'src/redux/actions/blogActions';
 import { isEmpty } from 'lodash';
@@ -10,10 +10,13 @@ import Notification from 'src/components/Notification';
 import { RootState } from 'src/redux/store';
 import { FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL, ERR_MESSAGE, MESSAGE_404 } from 'src/utils/helper';
+import axios from 'axios';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [totalPages, setTotalPages] = useState(0);
 
   const {
     blogs = [],
@@ -26,9 +29,22 @@ const HomePage = () => {
     search,
   } = useSelector((state: RootState) => state.blogs) ?? {};
 
+  // TODO: handle count for total page because missing totalPages in api
+  const handleCountTotalPage = useCallback(async () => {
+    try {
+      const response = await axios.get(BASE_URL);
+      const totalPosts = response?.data?.length;
+      const calculatedTotalPages = Math.ceil(totalPosts / limit);
+      setTotalPages(calculatedTotalPages);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [limit]);
+
   useEffect(() => {
+    handleCountTotalPage();
     dispatch(fetchBlogsRequest({ page: currentPage, limit, sortBy, order, search }));
-  }, [dispatch, currentPage, limit, sortBy, order, search]);
+  }, [dispatch, currentPage, limit, sortBy, order, search, handleCountTotalPage]);
 
   const paginate = (pageNumber: number) =>
     dispatch(fetchBlogsRequest({ page: pageNumber, limit, sortBy, order, search }));
@@ -38,13 +54,17 @@ const HomePage = () => {
 
   const handleCreateBlog = () => navigate('/blogs/new-edit-blog');
 
+  const isNotFoundArticle =
+    isEmpty(blogs) ||
+    (error === MESSAGE_404 && !!search) ||
+    (error === ERR_MESSAGE && currentPage !== 1);
+
   if (loading) return <LoadingCommon />;
-  if (error) return <Notification message={error} />;
 
   return (
     <div className="d-flex flex-column">
       <h3 className="text-center mt-5">Tin Tức</h3>
-      {!isEmpty(blogs) && !loading ? (
+      {!loading ? (
         <>
           <SearchBar onSearch={handleSearch} searchKey={search} />
           <div className="container d-flex justify-content-start">
@@ -56,12 +76,21 @@ const HomePage = () => {
               Add Blog
             </button>
           </div>
-          <Article data={blogs} />
+          {isNotFoundArticle ? (
+            <Notification message="Không tìm thấy tin tức" isHideBtn />
+          ) : (
+            <Article data={blogs} />
+          )}
         </>
       ) : (
         <Notification message="Không tìm thấy tin tức" />
       )}
-      <Pagination totalPosts={blogs.length} onPageChange={paginate} currentPage={currentPage} />
+      <Pagination
+        totalPosts={blogs.length}
+        onPageChange={paginate}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
@@ -14,7 +15,10 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-dark align-content-center fixed-top">
       <div className="container d-flex align-content-center">
-        <div className="mt-2 text-light justify-content-center d-flex align-content-center">
+        <button
+          onClick={() => handleGoToOtherPage('')}
+          className="pointer-event bg-transparent border-0 mt-2 text-light justify-content-center d-flex align-content-center"
+        >
           <img
             src="https://nals.vn/wp-content/uploads/2021/03/nals-white.png"
             alt="LOGO_NALS"
@@ -22,7 +26,7 @@ function Navbar() {
             height={25}
           />
           <p className="ml-2 font-weight-bold lead">LVS Blogs</p>
-        </div>
+        </button>
         <button
           className="navbar-toggler"
           type="button"
@@ -38,7 +42,7 @@ function Navbar() {
           <ul className="navbar-nav ml-auto mt-1">
             <li className="nav-item">
               <p
-                className="nav-link text-light cursor-pointer"
+                className="nav-link text-light align-content-center cursor-pointer"
                 onClick={() => handleGoToOtherPage('')}
               >
                 Home

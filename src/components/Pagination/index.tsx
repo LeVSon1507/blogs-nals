@@ -4,15 +4,12 @@ interface Props {
   currentPage: number;
   onPageChange: (pageNumber: number) => void;
   totalPosts: number;
+  totalPages: number;
 }
 
-const Pagination: React.FC<Props> = ({ currentPage, onPageChange, totalPosts }) => {
+const Pagination: React.FC<Props> = ({ currentPage, onPageChange, totalPosts, totalPages }) => {
   const pageNumbers = [];
-
-  //TODO: change number 5 to totalPages when BE update
-  const TOTAL_PAGES = 5;
-
-  for (let i = 1; i <= TOTAL_PAGES; i++) {
+  for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
 
@@ -32,8 +29,11 @@ const Pagination: React.FC<Props> = ({ currentPage, onPageChange, totalPosts }) 
               </button>
             </li>
             {pageNumbers.map((number) => (
-              <li key={number} className={number === currentPage ? 'active' : ''}>
-                <button className="btn btn-primary mx-1" onClick={() => onPageChange(number)}>
+              <li key={number}>
+                <button
+                  className={`btn mx-1 ${number === currentPage ? 'btn-info' : 'btn-primary'}`}
+                  onClick={() => onPageChange(number)}
+                >
                   {number}
                 </button>
               </li>
@@ -43,7 +43,7 @@ const Pagination: React.FC<Props> = ({ currentPage, onPageChange, totalPosts }) 
                 className="btn btn-primary"
                 aria-label="Next"
                 onClick={() => onPageChange(currentPage + 1)}
-                disabled={currentPage === TOTAL_PAGES}
+                disabled={currentPage === totalPages}
               >
                 <span aria-hidden="true">»</span>
               </button>
@@ -53,8 +53,7 @@ const Pagination: React.FC<Props> = ({ currentPage, onPageChange, totalPosts }) 
         <div className="col-sm-6 text-right">
           {!!totalPosts && (
             <em>
-              Displaying {(currentPage - 1) * 8 + 1} to {Math.min(currentPage * 8, totalPosts)} (of{' '}
-              {totalPosts} posts)
+              Page {currentPage} of {totalPages}
             </em>
           )}
         </div>

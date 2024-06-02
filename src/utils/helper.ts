@@ -4,6 +4,10 @@ import { useEffect } from 'react';
 import { ToastError } from './toastOptions';
 
 export const LOGO_NALS = 'https://nals.vn/wp-content/uploads/2021/03/nals-white.png';
+export const IMPLEMENT_MESSAGE =
+  'Chức năng này đang trong quá trình phát triển, xin lỗi vì sự bất tiện này!';
+
+export const ERR_MESSAGE = 'Quớ Làng Lỗi Rồi!';
 
 const isImage = ['png', 'jpg', 'svg', 'webp', 'jpeg'];
 

@@ -4,7 +4,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import contactusSVG from 'src/assets/images/contact_us.svg';
 import './styles.css';
 import { ToastInfo } from 'src/utils/toastOptions';
-import { RE_CAPTCHA_SITE_KEY } from 'src/utils/helper';
+import { IMPLEMENT_MESSAGE, RE_CAPTCHA_SITE_KEY } from 'src/utils/helper';
 
 const ContactUs = () => {
   const [isShowBtnSend, setIsShowBtnSend] = useState(true);
@@ -12,7 +12,7 @@ const ContactUs = () => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = () => {
-    ToastInfo('Chức năng này đang trong quá trình phát triển, xin lỗi vì sự bất tiện này!');
+    ToastInfo(IMPLEMENT_MESSAGE);
   };
 
   const onSuccessReCaptcha = () => {

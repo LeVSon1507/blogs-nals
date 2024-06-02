@@ -11,9 +11,10 @@ import LoadingCommon from 'src/components/LoadingCommon';
 import Notification from 'src/components/Notification';
 import date_img from 'src/assets/images/date.svg';
 import avatar_img from 'src/assets/images/avatar.svg';
-import { formatDateTime, useScrollTop } from 'src/utils/helper';
+import { IMPLEMENT_MESSAGE, formatDateTime, useScrollTop } from 'src/utils/helper';
 import LazyShow from 'src/components/Animated/LazyShow';
 import Canvas from 'src/components/Animated/Canvas';
+import { ToastInfo } from 'src/utils/toastOptions';
 
 function BlogDetailPage() {
   useScrollTop();
@@ -25,6 +26,10 @@ function BlogDetailPage() {
   useEffect(() => {
     dispatch(fetchBlogDetailRequest(id));
   }, [id]);
+
+  const handleToastMessage = () => {
+    ToastInfo(IMPLEMENT_MESSAGE);
+  };
 
   if (loading) return <LoadingCommon />;
   if (error) return <Notification message={error} />;
@@ -101,7 +106,7 @@ function BlogDetailPage() {
                   </div>
                   <div className="contact-form article-comment">
                     <h4>Leave a comment</h4>
-                    <form id="contact-form">
+                    <div id="contact-form">
                       <div className="row">
                         <div className="col-md-12">
                           <div className="form-group">
@@ -115,13 +120,13 @@ function BlogDetailPage() {
                         </div>
                         <div className="col-md-12">
                           <div className="send">
-                            <button className="px-btn theme">
+                            <button onClick={handleToastMessage} className="px-btn theme">
                               <span>Submit</span> <i className="arrow" />
                             </button>
                           </div>
                         </div>
                       </div>
-                    </form>
+                    </div>
                   </div>
                 </>
               </LazyShow>
