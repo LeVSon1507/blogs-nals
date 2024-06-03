@@ -93,16 +93,18 @@ const HomePage = () => {
       <h3 className="text-center mt-5">Tin Tức</h3>
       {!loading && (
         <>
-          <div className={`container ${isSearch ? '' : 'd-flex'}`}>
+          <div
+            className={`container ${isSearch ? '' : 'd-flex flex-wrap justify-content-between'}`}
+          >
             <SearchBar
               onSearch={handleSearch}
               isSearch={isSearch}
               searchKey={search}
               toggleSearchBar={toggleSearchBar}
             />
-            <div className="d-flex mt-3">
+            <div className="d-flex mt-3 flex-wrap">
               <button
-                className="btn btn-primary d-flex align-items-center mr-2"
+                className="btn btn-primary d-flex align-items-center mr-2 mb-2"
                 onClick={handleCreateBlog}
               >
                 <FaPlus className="mr-1" size={20} />

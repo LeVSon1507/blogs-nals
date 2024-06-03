@@ -35,8 +35,8 @@ const SortDropDown: React.FC<Props> = ({ onSort, sortKey, sortOrder }) => {
   };
 
   return (
-    <div className="d-flex align-items-center">
-      <div className="dropdown">
+    <div className="d-flex align-items-center flex-wrap">
+      <div className="dropdown mb-2">
         <button
           className="btn btn-secondary dropdown-toggle"
           type="button"
@@ -65,7 +65,7 @@ const SortDropDown: React.FC<Props> = ({ onSort, sortKey, sortOrder }) => {
         </div>
       </div>
       {sortKey && (
-        <div className="dropdown ml-2">
+        <div className="dropdown ml-2 mb-2">
           <button
             className="btn btn-secondary dropdown-toggle"
             type="button"
