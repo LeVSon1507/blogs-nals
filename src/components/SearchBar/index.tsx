@@ -5,9 +5,11 @@ import { CiSearch } from 'react-icons/ci';
 interface Props {
   onSearch: (searchTerm: string) => void;
   searchKey: string;
+  toggleSearchBar: () => void;
+  isSearch: boolean;
 }
 
-const SearchBar: React.FC<Props> = ({ onSearch, searchKey }) => {
+const SearchBar: React.FC<Props> = ({ onSearch, searchKey, toggleSearchBar, isSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = (e) => {
@@ -15,15 +17,21 @@ const SearchBar: React.FC<Props> = ({ onSearch, searchKey }) => {
     onSearch(searchTerm);
   };
 
-  return (
-    <div className="cmp-searchBar-container">
+  return !isSearch ? (
+    <div className="d-flex justify-content-start mt-2">
+      <button onClick={toggleSearchBar} className="btn btn-primary bg-transparent border-0">
+        <CiSearch className="ci-search-icon" />
+      </button>
+    </div>
+  ) : (
+    <>
       <div className="row justify-content-center">
-        <div className="col-12 col-md-10 col-lg-8">
+        <div className="col-12 col-md-8 col-lg-8">
           <form className="card card-sm" onSubmit={handleSearch}>
             <div className="card-body row no-gutters align-items-center">
-              <div className="col-auto">
+              <button onClick={toggleSearchBar} className="col-auto bg-transparent border-0">
                 <CiSearch className="ci-search-icon" />
-              </div>
+              </button>
               <div className="col m-2">
                 <input
                   className="form-control form-control-lg "
@@ -64,7 +72,7 @@ const SearchBar: React.FC<Props> = ({ onSearch, searchKey }) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

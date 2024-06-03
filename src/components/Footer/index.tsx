@@ -41,18 +41,18 @@ const Footer = () => {
             </div>
           </div>
           <div className="col-md-4 mt-3 mb-4 mb-md-0">
-            <FooterTitle text={'Địa chỉ'} />
+            <FooterTitle text={'Address'} />
             <FooterLink text={'Da Nang city'} />
             <FooterLink text={'0982123456'} />
             <FooterLink text={'sonlvs1507@gmail.com'} />
             <FooterLink text={'www.lvsblogs.com'} />
           </div>
           <div className="col-md-4 mt-3 mb-4 mb-md-0">
-            <FooterTitle text={'Chức năng'} />
-            <FooterLink text={'Tin tức cập nhật.'} />
-            <FooterLink text={'Phân tích và bình luận.'} />
-            <FooterLink text={'Tìm kiếm thông tin.'} />
-            <FooterLink text={'Kết nối cộng đồng.'} />
+            <FooterTitle text={'Functions'} />
+            <FooterLink text={'Latest news.'} />
+            <FooterLink text={'Analysis and commentary.'} />
+            <FooterLink text={'Information search.'} />
+            <FooterLink text={'Community connection.'} />
           </div>
         </div>
       </div>

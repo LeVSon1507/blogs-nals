@@ -12,12 +12,11 @@ import { FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL, ERR_MESSAGE, MESSAGE_404 } from 'src/utils/helper';
 import axios from 'axios';
+import SortDropDown from 'src/components/SortDropDown';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [totalPages, setTotalPages] = useState(0);
-
   const {
     blogs = [],
     loading,
@@ -28,8 +27,11 @@ const HomePage = () => {
     order,
     search,
   } = useSelector((state: RootState) => state.blogs) ?? {};
+  const [totalPages, setTotalPages] = useState(0);
+  const [isSearch, setIsSearch] = useState(false);
+  const [sort, setSort] = useState(sortBy);
+  const [orderType, setOrderType] = useState(order);
 
-  // TODO: handle count for total page because missing totalPages in api
   const handleCountTotalPage = useCallback(async () => {
     try {
       const response = await axios.get(BASE_URL);
@@ -43,14 +45,20 @@ const HomePage = () => {
 
   useEffect(() => {
     handleCountTotalPage();
-    dispatch(fetchBlogsRequest({ page: currentPage, limit, sortBy, order, search }));
-  }, [dispatch, currentPage, limit, sortBy, order, search, handleCountTotalPage]);
+    dispatch(
+      fetchBlogsRequest({ page: currentPage, limit, sortBy: sort, order: orderType, search }),
+    );
+  }, [dispatch, currentPage, limit, sort, orderType, search, handleCountTotalPage]);
 
   const paginate = (pageNumber: number) =>
-    dispatch(fetchBlogsRequest({ page: pageNumber, limit, sortBy, order, search }));
+    dispatch(
+      fetchBlogsRequest({ page: pageNumber, limit, sortBy: sort, order: orderType, search }),
+    );
 
   const handleSearch = (searchTerm: string) =>
-    dispatch(fetchBlogsRequest({ page: 1, limit, sortBy, order, search: searchTerm }));
+    dispatch(
+      fetchBlogsRequest({ page: 1, limit, sortBy: sort, order: orderType, search: searchTerm }),
+    );
 
   const handleCreateBlog = () => navigate('/blogs/new-edit-blog');
 
@@ -59,38 +67,64 @@ const HomePage = () => {
     (error === MESSAGE_404 && !!search) ||
     (error === ERR_MESSAGE && currentPage !== 1);
 
+  const toggleSearchBar = () => {
+    setIsSearch((prev) => !prev);
+  };
+
+  const handleSort = (sortTerm: string, orderType: string) => {
+    setSort(sortTerm);
+    setOrderType(orderType);
+    dispatch(
+      fetchBlogsRequest({
+        page: currentPage,
+        limit,
+        sortBy: sortTerm,
+        order: orderType,
+        search: search,
+      }),
+    );
+  };
+
   if (loading) return <LoadingCommon />;
 
   return (
     <div className="d-flex flex-column">
       <h3 className="text-center mt-5">Tin Tức</h3>
-      {!loading ? (
+      {!loading && (
         <>
-          <SearchBar onSearch={handleSearch} searchKey={search} />
-          <div className="container d-flex justify-content-start">
-            <button
-              className="btn btn-primary text-center d-flex justify-content-start"
-              onClick={handleCreateBlog}
-            >
-              <FaPlus className="mr-1" size={20} />
-              Add Blog
-            </button>
+          <div className={`container ${isSearch ? '' : 'd-flex'}`}>
+            <SearchBar
+              onSearch={handleSearch}
+              isSearch={isSearch}
+              searchKey={search}
+              toggleSearchBar={toggleSearchBar}
+            />
+            <div className="d-flex mt-3">
+              <button
+                className="btn btn-primary d-flex align-items-center mr-2"
+                onClick={handleCreateBlog}
+              >
+                <FaPlus className="mr-1" size={20} />
+                <span>Add Blog</span>
+              </button>
+              <SortDropDown onSort={handleSort} sortKey={sort} sortOrder={orderType} />
+            </div>
           </div>
           {isNotFoundArticle ? (
-            <Notification message="Không tìm thấy tin tức" isHideBtn />
+            <Notification message="Không tìm thấy tin tức" isHideBtn />
           ) : (
             <Article data={blogs} />
           )}
         </>
-      ) : (
-        <Notification message="Không tìm thấy tin tức" />
       )}
-      <Pagination
-        totalPosts={blogs.length}
-        onPageChange={paginate}
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
+      {!loading && (
+        <Pagination
+          totalPosts={blogs.length}
+          onPageChange={paginate}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 };

@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
@@ -67,6 +68,35 @@ const BlogForm = () => {
   const [isOpenModalCrop, setIsOpenModalCrop] = React.useState(false);
   const [isCropDone, setIsCropDone] = React.useState(!!blogDetail?.image);
 
+  const handleCreateBlog = (payload) => {
+    dispatch(createBlogRequest(payload));
+  };
+
+  const handleEditBlog = (id, payload) => {
+    dispatch(editBlogRequest(id, payload));
+  };
+
+  const submitForm = () => {
+    const payload = { ...getValues(), image: imageUrl };
+
+    if (isEditing) {
+      handleEditBlog(id, payload);
+    } else {
+      handleCreateBlog(payload);
+    }
+  };
+
+  const handleResetForm = useCallback(() => {
+    reset({ title: '', image: '', content: '' });
+    dispatch(clearBlogDetailRequest());
+    setImageUrl('');
+    setIsCropDone(false);
+  }, []);
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   useEffect(() => {
     if (id) {
       dispatch(fetchBlogDetailRequest(id));
@@ -80,8 +110,7 @@ const BlogForm = () => {
     if (isEditing && blogDetail?.image) {
       setImageUrl(blogDetail.image);
       setIsCropDone(true);
-    }
-    if (!isEditing) {
+    } else {
       setImageUrl(imageDefault);
       setIsCropDone(false);
     }
@@ -91,42 +120,15 @@ const BlogForm = () => {
     reset(initValue);
   }, [initValue, reset]);
 
-  const submitForm = () => {
-    const payload = { ...getValues(), image: imageUrl };
-
-    if (isEditing) {
-      dispatch(editBlogRequest(id, payload));
-      if (isEditSuccess) {
-        dispatch(fetchBlogDetailRequest(id));
-        setTimeout(() => {
-          ToastSuccess('Edit blog successfully');
-          handleResetForm();
-          navigate(`/blogs/${id}`);
-        }, 1000);
-      }
-    } else {
-      dispatch(createBlogRequest(payload));
-      if (isCreateSuccess) {
-        dispatch(fetchBlogDetailRequest(id));
-        setTimeout(() => {
-          ToastSuccess('Create new blog successfully');
-          handleResetForm();
-          navigate(`/blogs/${newBlogInfo?.id}`);
-        }, 1000);
-      }
+  useEffect(() => {
+    if (isEditSuccess || isCreateSuccess) {
+      const blogId = isEditSuccess ? id : newBlogInfo?.id;
+      dispatch(fetchBlogDetailRequest(blogId));
+      ToastSuccess(isEditSuccess ? 'Edit blog successfully' : 'Create new blog successfully');
+      handleResetForm();
+      navigate(`/blogs/${blogId}`);
     }
-  };
-
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
-  const handleResetForm = () => {
-    reset({ title: '', image: '', content: '' });
-    dispatch(clearBlogDetailRequest());
-    setImageUrl('');
-    setIsCropDone(false);
-  };
+  }, [handleResetForm, id, isEditSuccess, isCreateSuccess, navigate, newBlogInfo?.id]);
 
   if (loading) return <LoadingCommon />;
 
@@ -147,7 +149,7 @@ const BlogForm = () => {
                 onClick={handleResetForm}
                 className="p-2 mr-2 btn btn-light btn-sm btn-icon-text"
               >
-                <span className="text">Cancel</span>
+                <span className="text">Clear all</span>
               </button>
               <button
                 disabled={isEmpty(imageUrl) || isEmpty(watch('content')) || isEmpty(watch('title'))}

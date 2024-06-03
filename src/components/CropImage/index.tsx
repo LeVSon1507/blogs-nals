@@ -1,7 +1,6 @@
 import { FaTimes, FaCrop } from 'react-icons/fa';
 import React, { useState } from 'react';
 import Cropper from 'react-easy-crop';
-import { ToastError } from 'src/utils/toastOptions';
 import getCroppedImg from './helpers';
 
 const CropImage = ({
@@ -35,7 +34,6 @@ const CropImage = ({
       setIsOpenModalCrop(false);
       setIsCropDone(true);
     } catch (error) {
-      ToastError(error);
       console.log(error);
       setIsCropDone(false);
     }
