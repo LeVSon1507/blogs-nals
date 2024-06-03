@@ -45,7 +45,7 @@ const Footer = () => {
             <FooterLink text={'Da Nang city'} />
             <FooterLink text={'0982123456'} />
             <FooterLink text={'sonlvs1507@gmail.com'} />
-            <FooterLink text={'www.lvsblogs.com'} />
+            <FooterLink text={'https://blogs-nals.vercel.app/'} />
           </div>
           <div className="col-md-4 mt-3 mb-4 mb-md-0">
             <FooterTitle text={'Functions'} />

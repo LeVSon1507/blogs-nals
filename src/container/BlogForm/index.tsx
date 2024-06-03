@@ -111,7 +111,8 @@ const BlogForm = () => {
       setImageUrl(blogDetail.image);
       setIsCropDone(true);
     } else {
-      setImageUrl(imageDefault);
+      setImageUrl('');
+      handleResetForm();
       setIsCropDone(false);
     }
   }, [blogDetail?.image, isEditing]);

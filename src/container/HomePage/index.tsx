@@ -32,6 +32,7 @@ const HomePage = () => {
   const [sort, setSort] = useState(sortBy);
   const [orderType, setOrderType] = useState(order);
 
+  // TODO: handle count total page for pagination because it's not have in API
   const handleCountTotalPage = useCallback(async () => {
     try {
       const response = await axios.get(BASE_URL);
