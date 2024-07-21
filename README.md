@@ -31,13 +31,13 @@ This is a blog application built with React, Redux, Bootstrap and TypeScript. It
 1. Clone the repository:
 
    ```
-   git clone https://github.com/LeVSon1507/blogs-nals.git
+   git clone https://github.com/LeVSon1507/dev-blogs.git
    ```
 
 1. Install dependencies:
 
    ```
-   cd nals-blog-exam
+   cd dev-blogs
    npm install
    ```
 
@@ -77,7 +77,7 @@ Contributions are welcome! If you find any issues or have suggestions for improv
 
 ## Live Demo
 
-You can see a live demo of the application at: https://blogs-nals.vercel.app/
+You can see a live demo of the application at: https://dev-guide-blogs.vercel.app/
 
 ## Contact
 
