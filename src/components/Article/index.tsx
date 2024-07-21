@@ -2,7 +2,7 @@ import './style.css';
 import img from 'src/assets/images/content_blog.svg';
 import { Blog } from 'src/redux/type';
 import { isEmpty } from 'lodash';
-import { LOGO_NALS, formatDateTime } from 'src/utils/helper';
+import { formatDateTime } from 'src/utils/helper';
 import { useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 
@@ -72,7 +72,7 @@ const Article = ({ data }: { data: Blog[] }) => {
                   </div>
                   <div className="big-icon h1 text-custom">
                     <span className="uim-svg">
-                      <img src={LOGO_NALS ?? img} alt="LOGO_NALS" width={200} height={200} />
+                      <img src={img} alt="LOGO" width={200} height={200} />
                     </span>
                   </div>
                 </div>

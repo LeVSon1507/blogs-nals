@@ -42,9 +42,18 @@ export const fetchBlogsRequest = (params: {
   payload: params,
 });
 
-export const fetchBlogsSuccess = (blogs: Blog[]) => ({
+export const fetchBlogsSuccess = ({
+  blogs,
+  totalPages,
+}: {
+  blogs: Blog[];
+  totalPages: number;
+}) => ({
   type: FETCH_BLOGS_SUCCESS,
-  payload: blogs,
+  payload: {
+    blogs,
+    totalPages,
+  },
 });
 
 export const fetchBlogsFailure = (error: string) => ({

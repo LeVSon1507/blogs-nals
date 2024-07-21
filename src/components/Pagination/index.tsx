@@ -8,10 +8,7 @@ interface Props {
 }
 
 const Pagination: React.FC<Props> = ({ currentPage, onPageChange, totalPosts, totalPages }) => {
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
     <div className="container mt-4 mb-3">

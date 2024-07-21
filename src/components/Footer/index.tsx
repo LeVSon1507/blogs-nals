@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import logo from 'src/assets/images/content_blog.svg';
+import logo from 'src/assets/images/dev_activity.svg';
 import FooterTitle from './FooterTitle';
 import FooterLink from './FooterLink';
 import { FaFacebookSquare } from 'react-icons/fa';
@@ -21,7 +21,7 @@ const Footer = () => {
               height={60}
               className="bg-white p-2 mr-3 mb-2 rounded"
             />
-            <FooterTitle text={'LVS Blogs'} />
+            <FooterTitle text={'Dev Guide'} />
             <div className="d-flex justify-content-center justify-content-md-start">
               <a href="#" className="text-dark mr-2">
                 <p className="d-flex align-items-center">
@@ -45,7 +45,7 @@ const Footer = () => {
             <FooterLink text={'Da Nang city'} />
             <FooterLink text={'0982123456'} />
             <FooterLink text={'sonlvs1507@gmail.com'} />
-            <FooterLink text={'https://blogs-nals.vercel.app/'} />
+            <FooterLink text={'https://dev-guide-blogs.vercel.app/'} />
           </div>
           <div className="col-md-4 mt-3 mb-4 mb-md-0">
             <FooterTitle text={'Functions'} />

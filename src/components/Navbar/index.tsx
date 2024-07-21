@@ -4,6 +4,7 @@
 import React from 'react';
 import './styles.css';
 import { useNavigate } from 'react-router-dom';
+import img from 'src/assets/images/dev_activity.svg';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -19,13 +20,8 @@ function Navbar() {
           onClick={() => handleGoToOtherPage('')}
           className="pointer-event bg-transparent border-0 mt-2 text-light justify-content-center d-flex align-content-center"
         >
-          <img
-            src="https://nals.vn/wp-content/uploads/2021/03/nals-white.png"
-            alt="LOGO_NALS"
-            width={25}
-            height={25}
-          />
-          <p className="ml-2 font-weight-bold lead">LVS Blogs</p>
+          <img src={img} alt="LOGO" width={25} height={25} />
+          <p className="ml-2 font-weight-bold lead">Dev Guide</p>
         </button>
         <button
           className="navbar-toggler"

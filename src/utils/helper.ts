@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { useEffect } from 'react';
 import { ToastError } from './toastOptions';
 
-export const LOGO_NALS = 'src/assets/images/news_icon.svg';
 export const IMPLEMENT_MESSAGE =
   'Chức năng này đang trong quá trình phát triển, xin lỗi vì sự bất tiện này!';
 
@@ -222,6 +221,8 @@ export const MY_LINKED_URL = 'https://www.linkedin.com/in/i-am-le-van-son/';
 export const MY_FB_URL = 'https://www.facebook.com/me.iamlevson/';
 export const RE_CAPTCHA_SITE_KEY = '6LfQ3KUoAAAAAKy7R5K2DCfMEwYQy8_Qso9c5q37';
 export const MESSAGE_404 = 'Request failed with status code 404';
-export const BASE_URL = 'https://5f55a98f39221c00167fb11a.mockapi.io/blogs';
+// export const BASE_URL = 'https://5f55a98f39221c00167fb11a.mockapi.io/blogs';
+// export const BASE_URL = 'http://localhost:3333/blogs';
+export const BASE_URL = 'http://my-blog-server-production-8dc0.up.railway.app/blogs';
 
 export type Callback = (...args: any[]) => void;

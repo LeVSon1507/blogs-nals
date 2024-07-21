@@ -22,10 +22,14 @@ function* fetchBlogs(action: {
   payload: { page: number; limit: number; sortBy?: string; order?: string; search?: string };
 }) {
   try {
-    const { page, limit, sortBy, order = 'asc', search = '' } = action.payload;
-    const response: { data: Blog[] } = yield call(axios.get, BASE_URL, {
-      params: { page, limit, sortBy, order, search },
-    });
+    const { page, limit, sortBy, order = 'ASC', search = '' } = action.payload;
+    const response: { data: { blogs: Blog[]; totalPages: number } } = yield call(
+      axios.get,
+      BASE_URL,
+      {
+        params: { page, limit, sortBy, order, search },
+      },
+    );
 
     yield put(fetchBlogsSuccess(response.data));
   } catch (error) {
@@ -54,11 +58,7 @@ function* createBlog(action) {
 function* editBlog(action) {
   try {
     const { payload } = action;
-    yield call(
-      axios.put,
-      `https://5f55a98f39221c00167fb11a.mockapi.io/blogs/${payload.id}`,
-      payload.data,
-    );
+    yield call(axios.put, `${BASE_URL}/${payload.id}`, payload.data);
     yield put(editBlogSuccess());
   } catch (error) {
     yield put(editBlogFailure(error.message));

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchBlogsRequest } from 'src/redux/actions/blogActions';
 import { isEmpty } from 'lodash';
@@ -10,8 +10,7 @@ import Notification from 'src/components/Notification';
 import { RootState } from 'src/redux/store';
 import { FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { BASE_URL, ERR_MESSAGE, MESSAGE_404 } from 'src/utils/helper';
-import axios from 'axios';
+import { ERR_MESSAGE, MESSAGE_404 } from 'src/utils/helper';
 import SortDropDown from 'src/components/SortDropDown';
 
 const HomePage = () => {
@@ -26,30 +25,17 @@ const HomePage = () => {
     sortBy,
     order,
     search,
+    totalPages,
   } = useSelector((state: RootState) => state.blogs) ?? {};
-  const [totalPages, setTotalPages] = useState(0);
   const [isSearch, setIsSearch] = useState(false);
   const [sort, setSort] = useState(sortBy);
   const [orderType, setOrderType] = useState(order);
 
-  // TODO: handle count total page for pagination because it's not have in API
-  const handleCountTotalPage = useCallback(async () => {
-    try {
-      const response = await axios.get(BASE_URL);
-      const totalPosts = response?.data?.length;
-      const calculatedTotalPages = Math.ceil(totalPosts / limit);
-      setTotalPages(calculatedTotalPages);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [limit]);
-
   useEffect(() => {
-    handleCountTotalPage();
     dispatch(
       fetchBlogsRequest({ page: currentPage, limit, sortBy: sort, order: orderType, search }),
     );
-  }, [dispatch, currentPage, limit, sort, orderType, search, handleCountTotalPage]);
+  }, [dispatch, currentPage, limit, sort, orderType, search]);
 
   const paginate = (pageNumber: number) =>
     dispatch(
